@@ -1,0 +1,140 @@
+menu "Real-Time tuning options (use with caution)"
+
+comment "=== Core RT Features ==="
+
+config EN_META_RT
+    bool "Enable the meta-altera-rt layer."
+    default n
+
+config KAS_INCLUDE_META_ALTERA_RT
+    string
+    default "meta-altera-rt/kas/rt.yml" if EN_META_RT
+
+config REALTIME_PATCH
+    bool "Add kernel PREEMPT-RT patch."
+    default n
+    depends on EN_META_RT
+
+config CONFIG_REALTIME_PATCH
+    string
+    default " rt-patch" if REALTIME_PATCH
+    default "" if !REALTIME_PATCH
+
+if EN_META_RT
+comment "                                     "
+comment "   === ATF-level optimizations ===   "
+endif
+
+choice
+    prompt "Select a core for ATF optimizations."
+    default RT_CORE_NONE
+    depends on EN_META_RT
+
+config RT_CORE_NONE
+    bool "None."
+
+config RT_CORE1_OPT
+    bool "Enable ATF optimizations for core 1."
+
+config RT_CORE3_OPT
+    bool "Enable ATF optimizations for core 3."
+
+endchoice
+
+config CONFIG_RT_CORE3_OPT
+    string
+    default " rt-atf-core3" if RT_CORE3_OPT
+    default "" if !RT_CORE3_OPT
+
+config CONFIG_RT_CORE1_OPT
+    string
+    default " rt-atf-core1" if RT_CORE1_OPT
+    default "" if !RT_CORE1_OPT
+
+if EN_META_RT
+comment "                                     "
+comment "    === CPU and IRQ Isolation ===    "
+endif
+
+config EN_CORE_ISOL
+    bool "Enable core isolation."
+    default n
+    depends on EN_META_RT
+
+config CONFIG_EN_CORE_ISOL
+    string
+    default " rt-core-isol" if EN_CORE_ISOL
+    default "" if !EN_CORE_ISOL
+
+config CPU_ISOL
+    string "List of CPU cores to isolate (format: #,#,#)."
+    default ""
+    depends on EN_CORE_ISOL
+
+config EN_IRQ_AFF
+    bool "Enable interrupt affinity."
+    default n
+    depends on EN_META_RT
+
+config CONFIG_EN_IRQ_AFF
+    string
+    default " rt-irq-aff" if EN_IRQ_AFF
+    default "" if !EN_IRQ_AFF
+
+config CPU_IRQ_AFF
+    string "List of CPU cores for IRQ affinity (format: #,#,#)."
+    default ""
+    depends on EN_IRQ_AFF
+
+if EN_META_RT
+comment "                                     "
+comment "  === Tickless and RCU Settings ===  "
+endif
+
+config EN_NO_HZ_FULL
+    bool "Enable full tickless mode (NO_HZ_FULL)."
+    default n
+    depends on EN_META_RT
+
+config CONFIG_EN_NO_HZ_FULL
+    string
+    default " rt-no-hz-full" if EN_NO_HZ_FULL
+    default "" if !EN_NO_HZ_FULL
+
+config CPU_NO_HZ_FULL
+    string "List of CPUs for full tickless mode (format: #,#,#)."
+    default ""
+    depends on EN_NO_HZ_FULL
+
+config EN_RCU_NOCBS
+    bool "Disable RCU callbacks (RCU_NOCB)."
+    default n
+    depends on EN_META_RT
+
+config CONFIG_EN_RCU_NOCBS
+    string
+    default " rt-rcu-nocbs" if EN_RCU_NOCBS
+    default "" if !EN_RCU_NOCBS
+
+config CPU_RCU_NOCBS
+    string "List of CPUs to disable RCU callbacks (format: #,#,#)."
+    default ""
+    depends on EN_RCU_NOCBS
+
+if EN_META_RT
+comment "                                     "
+comment "          === Utilities ===          "
+endif
+
+config RT_UTILS
+    bool "Install RT utilities."
+    default n
+    depends on EN_META_RT
+
+config CONFIG_RT_UTILS
+    string
+    default " rt-utils" if RT_UTILS
+    default "" if !RT_UTILS
+
+
+endmenu

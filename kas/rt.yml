@@ -1,0 +1,41 @@
+header:
+  version: 17
+
+repos:
+  meta-altera-rt:
+    path: .  # relative to kas.yml (main.yml)
+    layers:
+      meta-altera-rt:
+      
+local_conf_header:
+  # Converting variables from Kconfig to KAS/YOCTO
+  # CONFIG_REALTIME_PATCH -> rt-patch
+  # CONFIG_RT_CORE3_OPT -> rt-atf-core3
+  # CONFIG_RT_CORE1_OPT -> rt-atf-core1
+  # CONFIG_EN_CORE_ISOL -> rt-core-isol
+  # CONFIG_EN_IRQ_AFF -> rt-irq-aff
+  # CONFIG_EN_NO_HZ_FULL -> rt-no-hz-full
+  # CONFIG_EN_RCU_NOCBS -> rt-rcu-nocbs
+  # CONFIG_RT_UTILS -> rt-utils
+  meta-altera-rt: |
+    SOCFPGA_RT_FEATURES = ""
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_REALTIME_PATCH') if d.getVar('CONFIG_REALTIME_PATCH') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_RT_CORE3_OPT') if d.getVar('CONFIG_RT_CORE3_OPT') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_RT_CORE1_OPT') if d.getVar('CONFIG_RT_CORE1_OPT') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_RT_UTILS') if d.getVar('CONFIG_RT_UTILS') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_EN_CORE_ISOL') if d.getVar('CONFIG_EN_CORE_ISOL') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_EN_IRQ_AFF') if d.getVar('CONFIG_EN_IRQ_AFF') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_EN_NO_HZ_FULL') if d.getVar('CONFIG_EN_NO_HZ_FULL') else ''}"
+    SOCFPGA_RT_FEATURES:append = " ${@'%s' % d.getVar('CONFIG_EN_RCU_NOCBS') if d.getVar('CONFIG_EN_RCU_NOCBS') else ''}"
+    IMAGE_INSTALL:append = "${@bb.utils.contains('SOCFPGA_RT_FEATURES', 'rt-utils', ' rt-test-scripts rt-tests coreutils util-linux cpufrequtils htop', '', d)}"
+
+  bootargs-config: |
+    IMAGE_BOOT_ARGS:append = " ${@'isolcpus=%s' % d.getVar('CPU_ISOL') if d.getVar('CPU_ISOL') else ''}"
+    IMAGE_BOOT_ARGS:append = " ${@'nohz_full=%s' % d.getVar('CPU_NO_HZ_FULL') if d.getVar('CPU_NO_HZ_FULL') else ''}"
+    IMAGE_BOOT_ARGS:append = " ${@'irqaffinity=%s' % d.getVar('CPU_IRQ_AFF') if d.getVar('CPU_IRQ_AFF') else ''}"
+    IMAGE_BOOT_ARGS:append = " ${@'rcu_nocbs=%s' % d.getVar('CPU_RCU_NOCBS') if d.getVar('CPU_RCU_NOCBS') else ''}"
+    KERNEL_BOOTARGS:append = " console=ttyS0,115200 earlycon root=/dev/mmcblk0p2 rw rootwait panic=-1"
+    KERNEL_BOOTARGS:append = " ${@'isolcpus=%s' % d.getVar('CPU_ISOL') if d.getVar('CPU_ISOL') else ''}"
+    KERNEL_BOOTARGS:append = " ${@'nohz_full=%s' % d.getVar('CPU_NO_HZ_FULL') if d.getVar('CPU_NO_HZ_FULL') else ''}"
+    KERNEL_BOOTARGS:append = " ${@'irqaffinity=%s' % d.getVar('CPU_IRQ_AFF') if d.getVar('CPU_IRQ_AFF') else ''}"
+    KERNEL_BOOTARGS:append = " ${@'rcu_nocbs=%s' % d.getVar('CPU_RCU_NOCBS') if d.getVar('CPU_RCU_NOCBS') else ''}"

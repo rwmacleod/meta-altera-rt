@@ -92,3 +92,12 @@ Full documentation of this layer and options can be found at Altera® FPGA Devel
 See [Embedded Linux Real-Time Tuning using Kas/Yocto](https://altera-fpga.github.io/latest/real-time/embedded-linux/yocto-kas/)
 
 
+The provided layer has been validated using GSRD 2.0 for the Agilex™ 5 E-Series Premium Development Kit, but
+it is readily portable to other Altera® platforms using Yocto/KAS. The table below lists the corresponding
+verified release tags.
+
+| GSRD 2.0 version | Location | Commit ID/Tag |
+| ---------------------------------- | ---- | --- |
+| HPS GSRD User Guide for the Agilex™ 5 E-Series Premium Dev Kit  | https://github.com/altera-fpga/meta-altera-rt  | [QPDS25.3.1_REL_GSRD_PR](https://github.com/altera-fpga/meta-altera-rt/tree/QPDS25.3.1_REL_GSRD_PR) |
+
+

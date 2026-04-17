@@ -14,7 +14,7 @@ SRC_URI:append = "${@bb.utils.contains('SOCFPGA_RT_FEATURES', 'rt-no-hz-full', '
 SRC_URI:append = "${@bb.utils.contains('SOCFPGA_RT_FEATURES', 'rt-rcu-nocbs', ' file://rt-rcu-nocbs.scc', '', d)}"
 SRC_URI:append = "${@bb.utils.contains('SOCFPGA_RT_FEATURES', 'rt-utils', ' file://system_reg_dump.c', '', d)}"
 
-SRC_DIR = "${WORKDIR}/sources-unpack"
+SRC_DIR = "${WORKDIR}"
 
 do_configure:append() {
         ${@bb.utils.contains('SOCFPGA_RT_FEATURES', 'rt-utils','cp ${SRC_DIR}/system_reg_dump.c ${B}/source/drivers/misc/system_reg_dump.c','', d)}

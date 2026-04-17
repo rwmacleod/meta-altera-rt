@@ -98,6 +98,6 @@ verified release tags.
 
 | GSRD 2.0 version | Location | Commit ID/Tag |
 | ---------------------------------- | ---- | --- |
-| HPS GSRD User Guide for the Agilex™ 5 E-Series Premium Dev Kit  | https://github.com/altera-fpga/meta-altera-rt  | [QPDS25.3.1_REL_GSRD_PR](https://github.com/altera-fpga/meta-altera-rt/tree/QPDS25.3.1_REL_GSRD_PR) |
+| HPS GSRD User Guide for the Agilex™ 5 E-Series Premium Dev Kit  | https://github.com/altera-fpga/meta-altera-rt  | [QPDS25.3.1_REL_GSRD_PR](https://github.com/altera-fpga/meta-altera-rt/tree/QPDS26.1_REL_GSRD_PR) |
 
 
